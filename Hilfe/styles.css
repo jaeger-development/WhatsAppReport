@@ -1,0 +1,42 @@
+body {
+	font-family: Calibri, sans-serif;
+	}
+
+p {
+  text-align: justify;
+}
+
+h1 {
+	font-size: 16pt;
+	font-weight: bold;
+	}
+
+h2 {
+	font-size: 14pt;
+	font-weight: bold;
+	}
+
+h3 {
+	font-size: 12t;
+	font-weight: bold;
+	}
+
+h4 {
+	font-size: 12pt;
+	font-style: underline;
+	}
+
+table {
+	border-collapse: collapse;
+	padding: 10px;
+	border: none;
+	}
+
+td, th {
+	padding: 10px;
+	}
+
+.Bildunterschrift {
+	font-size: 11x;
+	font-weight: bold;
+	}

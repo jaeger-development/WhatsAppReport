@@ -1,0 +1,23 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=hilfe.chm
+Contents file=tableofcontents.hhc
+Default Font=Calibri Light,12,0
+Default topic=startseite.htm
+Display compile progress=No
+Error log file=Logfile.log
+Index file=index.hhk
+Language=0x407 Deutsch (Deutschland)
+Title=Hilfe - WhatsAppReport
+
+
+[FILES]
+startseite.htm
+import.htm
+export-android.htm
+export-ios.htm
+probleme.htm
+auswertung.htm
+
+[INFOTYPES]
+
