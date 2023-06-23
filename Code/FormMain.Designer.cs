@@ -29,47 +29,46 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            this.menuStripMainForm = new System.Windows.Forms.MenuStrip();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.MenuItemProgramm = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemProgrammLadeMail = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemProgrammLadeDatei = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItemProgrammBeenden = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemBeenden = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemEinstellungen = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemDebug = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemDebugOpenWorkDirectory = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemDebugOpenLogDirectory = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItemHilfe = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemInfo = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemInfoNutzungsbedingungen = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemInfoLizenzbedingungen = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusStripMainForm = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabelMainForm = new System.Windows.Forms.ToolStripStatusLabel();
-            this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.infoToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStripMainForm.SuspendLayout();
-            this.statusStripMainForm.SuspendLayout();
+            this.MenuItemProgramminfo = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemHilfe = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.richTextBoxKurzinfo = new System.Windows.Forms.RichTextBox();
+            this.buttonStart = new System.Windows.Forms.Button();
+            this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // menuStripMainForm
+            // menuStrip
             // 
-            this.menuStripMainForm.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuItemProgramm,
             this.MenuItemEinstellungen,
             this.MenuItemDebug,
-            this.MenuItemHilfe,
-            this.MenuItemInfo});
-            this.menuStripMainForm.Location = new System.Drawing.Point(0, 0);
-            this.menuStripMainForm.Name = "menuStripMainForm";
-            this.menuStripMainForm.Size = new System.Drawing.Size(950, 24);
-            this.menuStripMainForm.TabIndex = 5;
-            this.menuStripMainForm.Text = "menuStripMainForm";
+            this.MenuItemInfo,
+            this.MenuItemHilfe});
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(806, 24);
+            this.menuStrip.TabIndex = 5;
+            this.menuStrip.Text = "menuStripMainForm";
             // 
             // MenuItemProgramm
             // 
             this.MenuItemProgramm.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuItemProgrammLadeMail,
             this.MenuItemProgrammLadeDatei,
-            this.MenuItemProgrammBeenden});
+            this.MenuItemBeenden});
             this.MenuItemProgramm.Name = "MenuItemProgramm";
             this.MenuItemProgramm.Size = new System.Drawing.Size(76, 20);
             this.MenuItemProgramm.Text = "Programm";
@@ -88,12 +87,12 @@
             this.MenuItemProgrammLadeDatei.Text = "Lade Chat aus Verzeichnis";
             this.MenuItemProgrammLadeDatei.Click += new System.EventHandler(this.MenuItemLadeDatei_Click);
             // 
-            // MenuItemProgrammBeenden
+            // MenuItemBeenden
             // 
-            this.MenuItemProgrammBeenden.Name = "MenuItemProgrammBeenden";
-            this.MenuItemProgrammBeenden.Size = new System.Drawing.Size(291, 22);
-            this.MenuItemProgrammBeenden.Text = "Beenden";
-            this.MenuItemProgrammBeenden.Click += new System.EventHandler(this.beendenToolStripMenuItem_Click);
+            this.MenuItemBeenden.Name = "MenuItemBeenden";
+            this.MenuItemBeenden.Size = new System.Drawing.Size(291, 22);
+            this.MenuItemBeenden.Text = "Beenden";
+            this.MenuItemBeenden.Click += new System.EventHandler(this.MenuItemBeenden_Click);
             // 
             // MenuItemEinstellungen
             // 
@@ -128,9 +127,9 @@
             // MenuItemInfo
             // 
             this.MenuItemInfo.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.infoToolStripMenuItem1,
             this.MenuItemInfoNutzungsbedingungen,
-            this.MenuItemInfoLizenzbedingungen});
+            this.MenuItemInfoLizenzbedingungen,
+            this.MenuItemProgramminfo});
             this.MenuItemInfo.Name = "MenuItemInfo";
             this.MenuItemInfo.Size = new System.Drawing.Size(40, 20);
             this.MenuItemInfo.Text = "Info";
@@ -140,61 +139,75 @@
             this.MenuItemInfoNutzungsbedingungen.Name = "MenuItemInfoNutzungsbedingungen";
             this.MenuItemInfoNutzungsbedingungen.Size = new System.Drawing.Size(196, 22);
             this.MenuItemInfoNutzungsbedingungen.Text = "Nutzungsbedingungen";
-            this.MenuItemInfoNutzungsbedingungen.Click += new System.EventHandler(this.nutzungsbedingungenToolStripMenuItem1_Click);
+            this.MenuItemInfoNutzungsbedingungen.Click += new System.EventHandler(this.MenuItemNutzungsbedingungen);
             // 
             // MenuItemInfoLizenzbedingungen
             // 
             this.MenuItemInfoLizenzbedingungen.Name = "MenuItemInfoLizenzbedingungen";
             this.MenuItemInfoLizenzbedingungen.Size = new System.Drawing.Size(196, 22);
             this.MenuItemInfoLizenzbedingungen.Text = "Lizenzbedingungen";
-            this.MenuItemInfoLizenzbedingungen.Click += new System.EventHandler(this.lizenzToolStripMenuItem_Click);
+            this.MenuItemInfoLizenzbedingungen.Click += new System.EventHandler(this.MenuItemLizenzinfo);
             // 
-            // statusStripMainForm
+            // MenuItemProgramminfo
             // 
-            this.statusStripMainForm.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabelMainForm});
-            this.statusStripMainForm.Location = new System.Drawing.Point(0, 476);
-            this.statusStripMainForm.Name = "statusStripMainForm";
-            this.statusStripMainForm.Size = new System.Drawing.Size(950, 22);
-            this.statusStripMainForm.TabIndex = 7;
+            this.MenuItemProgramminfo.Name = "MenuItemProgramminfo";
+            this.MenuItemProgramminfo.Size = new System.Drawing.Size(196, 22);
+            this.MenuItemProgramminfo.Text = "Programminfo";
+            this.MenuItemProgramminfo.Click += new System.EventHandler(this.MenuItemProgramminfo_Click);
             // 
-            // toolStripStatusLabelMainForm
+            // MenuItemHilfe
             // 
-            this.toolStripStatusLabelMainForm.Name = "toolStripStatusLabelMainForm";
-            this.toolStripStatusLabelMainForm.Size = new System.Drawing.Size(37, 17);
-            this.toolStripStatusLabelMainForm.Text = "Bereit";
+            this.MenuItemHilfe.Name = "MenuItemHilfe";
+            this.MenuItemHilfe.Size = new System.Drawing.Size(44, 20);
+            this.MenuItemHilfe.Text = "Hilfe";
+            this.MenuItemHilfe.Click += new System.EventHandler(this.MenuItemHilfe_Click);
             // 
-            // infoToolStripMenuItem
+            // statusStrip
             // 
-            this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
-            this.infoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.infoToolStripMenuItem.Text = "Info";
+            this.statusStrip.Location = new System.Drawing.Point(0, 415);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(806, 22);
+            this.statusStrip.TabIndex = 0;
             // 
-            // infoToolStripMenuItem1
+            // richTextBoxKurzinfo
             // 
-            this.infoToolStripMenuItem1.Name = "infoToolStripMenuItem1";
-            this.infoToolStripMenuItem1.Size = new System.Drawing.Size(196, 22);
-            this.infoToolStripMenuItem1.Text = "Info";
-            this.infoToolStripMenuItem1.Click += new System.EventHandler(this.infoToolStripMenuItem1_Click);
+            this.richTextBoxKurzinfo.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.richTextBoxKurzinfo.Location = new System.Drawing.Point(277, 27);
+            this.richTextBoxKurzinfo.Name = "richTextBoxKurzinfo";
+            this.richTextBoxKurzinfo.ReadOnly = true;
+            this.richTextBoxKurzinfo.Size = new System.Drawing.Size(517, 385);
+            this.richTextBoxKurzinfo.TabIndex = 7;
+            this.richTextBoxKurzinfo.Text = "";
+            // 
+            // buttonStart
+            // 
+            this.buttonStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonStart.Image = global::WhatsAppReport.Properties.Resources.startbutton;
+            this.buttonStart.Location = new System.Drawing.Point(12, 27);
+            this.buttonStart.Name = "buttonStart";
+            this.buttonStart.Size = new System.Drawing.Size(259, 385);
+            this.buttonStart.TabIndex = 6;
+            this.buttonStart.UseVisualStyleBackColor = true;
+            this.buttonStart.Click += new System.EventHandler(this.buttonLoadEMail_Click);
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(950, 498);
-            this.Controls.Add(this.statusStripMainForm);
-            this.Controls.Add(this.menuStripMainForm);
+            this.ClientSize = new System.Drawing.Size(806, 437);
+            this.Controls.Add(this.richTextBoxKurzinfo);
+            this.Controls.Add(this.buttonStart);
+            this.Controls.Add(this.statusStrip);
+            this.Controls.Add(this.menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MainMenuStrip = this.menuStripMainForm;
+            this.MainMenuStrip = this.menuStrip;
             this.Name = "FormMain";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "WhatsAppReport";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.Load += new System.EventHandler(this.FormMain_Load);
-            this.menuStripMainForm.ResumeLayout(false);
-            this.menuStripMainForm.PerformLayout();
-            this.statusStripMainForm.ResumeLayout(false);
-            this.statusStripMainForm.PerformLayout();
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -202,12 +215,10 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip menuStripMainForm;
+        private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem MenuItemProgramm;
         private System.Windows.Forms.ToolStripMenuItem MenuItemProgrammLadeMail;
-        private System.Windows.Forms.StatusStrip statusStripMainForm;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelMainForm;
-        private System.Windows.Forms.ToolStripMenuItem infoToolStripMenuItem;
+        private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripMenuItem MenuItemProgrammLadeDatei;
         private System.Windows.Forms.ToolStripMenuItem MenuItemDebug;
         private System.Windows.Forms.ToolStripMenuItem MenuItemDebugOpenWorkDirectory;
@@ -216,9 +227,11 @@
         private System.Windows.Forms.ToolStripMenuItem MenuItemEinstellungen;
         private System.Windows.Forms.ToolStripMenuItem MenuItemInfoLizenzbedingungen;
         private System.Windows.Forms.ToolStripMenuItem MenuItemInfoNutzungsbedingungen;
-        private System.Windows.Forms.ToolStripMenuItem MenuItemProgrammBeenden;
         private System.Windows.Forms.ToolStripMenuItem MenuItemHilfe;
-        private System.Windows.Forms.ToolStripMenuItem infoToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemProgramminfo;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemBeenden;
+        private System.Windows.Forms.Button buttonStart;
+        private System.Windows.Forms.RichTextBox richTextBoxKurzinfo;
     }
 }
 

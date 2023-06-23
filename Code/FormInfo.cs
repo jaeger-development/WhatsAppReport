@@ -21,6 +21,11 @@ namespace WhatsAppReport
         private void FormInfo_Load(object sender, EventArgs e)
         {
 
+
+
+            labelDynamicProgrammversion.Text = Global.ProgramVersion;
+
+
             string rtfFileName = "info.rtf"; // Name der RTF-Datei
             string exeDirPath = AppDomain.CurrentDomain.BaseDirectory; // Pfad zum Verzeichnis der .exe-Datei
             string rtfFilePath = Path.Combine(exeDirPath, rtfFileName); // Kombinieren Sie die beiden Pfade

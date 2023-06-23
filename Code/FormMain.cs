@@ -56,27 +56,29 @@ namespace WhatsAppReport
             
             // DebugMenü nur anzeigen wenn in Einstellungen aktiviert
             MenuItemDebug.Visible = Global.ShowDebugMenu;
+
+            // Infofenster
+            string KurzInfo = Path.Combine(Global.ApplicationPath, "kurzinfo-main.rtf");
+
+            if (File.Exists(KurzInfo))
+            {
+                // Öffnen Sie die RTF-Datei und lesen Sie ihren Inhalt
+                richTextBoxKurzinfo.Rtf = File.ReadAllText(KurzInfo);
+            }
         }
 
+        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Global.LoescheTemporaereVerzeichnisse();
+        }
 
 
 
         // Bereich Programmbedienung
 
-
         private void MenuItemLadeEMail_Click(object sender, EventArgs e)
         {
-            // E-Mail öffnen
-            Outlook.MailItem MailFile = OpenMailFile();
-
-            // Null, wenn Benutzer abbricht
-            if (MailFile != null)
-            {
-                Global.AuswertungStarten();
-
-                // Extrahiere Anlagen
-                ExtractAttachmentsFromOutlookEmail(MailFile);
-            }
+            LoadEMail();
         }
 
         private void MenuItemLadeDatei_Click(object sender, EventArgs e)
@@ -149,40 +151,47 @@ namespace WhatsAppReport
             }
         }
 
+        private void MenuItemEinstellungen_Click(object sender, EventArgs e)
+        {
+            FormEinstellungen formEinstellungen = new FormEinstellungen();
+            formEinstellungen.ShowDialog();
+        }
 
+        private void MenuItemNutzungsbedingungen(object sender, EventArgs e)
+        {
+            FormNutzungsbedingungen formNutzungsbedingungen = new FormNutzungsbedingungen();
+            formNutzungsbedingungen.Show();
+        }
+
+        private void MenuItemLizenzinfo(object sender, EventArgs e)
+        {
+            FormLizenz formLizenz = new FormLizenz();
+            formLizenz.ShowDialog();
+        }
+
+        private void MenuItemHilfe_Click(object sender, EventArgs e)
+        {
+            string hilfe = "hilfe.chm"; // Ersetzen Sie den Pfad entsprechend Ihren Anforderungen
+            Help.ShowHelp(this, hilfe);
+        }
+
+        private void MenuItemProgramminfo_Click(object sender, EventArgs e)
+        {
+            FormInfo formInfo = new FormInfo();
+            formInfo.ShowDialog();
+        }
 
         private void MenuItemBeenden_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void MenuItemNutzungsbedingungen_Click(object sender, EventArgs e)
+        private void buttonLoadEMail_Click(object sender, EventArgs e)
         {
-            FormNutzungsbedingungen formNutzungsbedingungen = new FormNutzungsbedingungen();
-            formNutzungsbedingungen.Show();
+            LoadEMail();
         }
 
-        private void MenuItemHilfe_Click(object sender, EventArgs e)
-        {
-            string hilfe = Path.Combine(Global.appPath, "hilfe.chm");
-            Help.ShowHelp(this, hilfe);
-        }
 
-        private void MenuItemOpenTempFolder_Click(object sender, EventArgs e)
-        {
-            Process.Start("explorer.exe", Global.Arbeitsverzeichnis);
-        }
-
-        private void MenuItemSettings_Click(object sender, EventArgs e)
-        {
-            FormEinstellungen formEinstellungen = new FormEinstellungen();
-            formEinstellungen.ShowDialog();
-        }
-
-        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Global.LoescheTemporaereVerzeichnisse();
-        }
 
         // Bereich Debug
 
@@ -200,6 +209,21 @@ namespace WhatsAppReport
 
 
         // Bereich Mail von Outlook
+
+        public static void LoadEMail()
+        {
+            // E-Mail öffnen
+            Outlook.MailItem MailFile = OpenMailFile();
+
+            // Null, wenn Benutzer abbricht
+            if (MailFile != null)
+            {
+                Global.AuswertungStarten();
+
+                // Extrahiere Anlagen
+                ExtractAttachmentsFromOutlookEmail(MailFile);
+            }
+        }
 
         public static Outlook.MailItem OpenMailFile()
         {
@@ -249,7 +273,7 @@ namespace WhatsAppReport
             }
         }
 
-        private void ExtractAttachmentsFromOutlookEmail(Outlook.MailItem mailItem)
+        private static void ExtractAttachmentsFromOutlookEmail(Outlook.MailItem mailItem)
         {
             Global.WriteLog("E-Mail geöffnet");
             foreach (Outlook.Attachment attachment in mailItem.Attachments)
@@ -315,47 +339,6 @@ namespace WhatsAppReport
                 string destSubDirPath = Path.Combine(destinationDirPath, subDirName);
                 CopyDirectory(subDirPath, destSubDirPath);
             }
-        }
-
-        private void MenuItemHilfechmHilfe_Click(object sender, EventArgs e)
-        {
-            string hilfe = Path.Combine(Global.appPath, "hilfe.chm");
-            Help.ShowHelp(this, hilfe);
-        }
-
-        private void MenuItemEinstellungen_Click(object sender, EventArgs e)
-        {
-            FormEinstellungen formEinstellungen = new FormEinstellungen();
-            formEinstellungen.ShowDialog();
-        }
-
-        private void nutzungsbedingungenToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            FormNutzungsbedingungen formNutzungsbedingungen = new FormNutzungsbedingungen();
-            formNutzungsbedingungen.Show();
-        }
-
-        private void lizenzToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            FormLizenz formLizenz = new FormLizenz();   
-            formLizenz.ShowDialog();
-        }
-
-        private void beendenToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void hilfeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string hilfe = "hilfe.chm"; // Ersetzen Sie den Pfad entsprechend Ihren Anforderungen
-            Help.ShowHelp(this, hilfe);
-        }
-
-        private void infoToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            FormInfo formInfo = new FormInfo();
-            formInfo.ShowDialog();
         }
     }
 }

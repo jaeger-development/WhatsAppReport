@@ -22,6 +22,10 @@ namespace WhatsAppReport
 
         private void FormEinstellungen_Load(object sender, EventArgs e)
         {
+            textBoxBehoerde.Text = Global.AuswertungBehoerde;
+            textBoxDienststelle.Text = Global.AuswertungDienststelle;
+            textBoxSachbearbeiter.Text = Global.AuswertungSachbearbeiter;
+           
             numericUpDownReportSchriftgroesseTitel.Value = Global.ReportSchriftgroesseTitel;
             numericUpDownReportSchriftgroesseUeberschrift.Value = Global.ReportSchriftgroesseUeberschrift; 
             numericUpDownReportSchriftgroesseText.Value = Global.ReportSchriftgroesseText;
@@ -31,11 +35,15 @@ namespace WhatsAppReport
             numericUpDownChatprotokollMaxEmoticonhoehe.Value = Global.ChatprotokollMaxEmoticonhoehe;
 
             checkBoxShowMenuDebug.Checked = Global.ShowDebugMenu;
+
+
         }
 
         private void buttonSpeichern_Click(object sender, EventArgs e)
         {
-            // Speichere Variablen
+            Global.WriteRegistryValue("AuswertungBehoerde", textBoxBehoerde.Text, RegistryValueKind.String);
+            Global.WriteRegistryValue("AuswertungDienststelle", textBoxDienststelle.Text, RegistryValueKind.String);
+            Global.WriteRegistryValue("AuswertungSachbearbeiter", textBoxSachbearbeiter.Text, RegistryValueKind.String);
 
             Global.WriteRegistryValue("ReportSchriftgroesseTitel", numericUpDownReportSchriftgroesseTitel.Value, RegistryValueKind.String);
             Global.WriteRegistryValue("ReportSchriftgroesseUeberschrift", numericUpDownReportSchriftgroesseUeberschrift.Value, RegistryValueKind.String);

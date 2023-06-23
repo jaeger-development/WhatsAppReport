@@ -21,48 +21,66 @@ using System.Threading;
 using System.Security.Cryptography;
 using System.Web;
 using System.Reflection;
+using static System.Net.WebRequestMethods;
+using System.Xml.Linq;
+using Microsoft.Office.Interop.Word;
+using Application = System.Windows.Forms.Application;
+using File = System.IO.File;
+using Version = System.Version;
 
 namespace WhatsAppReport
 {
     public class Global
     {
         // Konstanten
-        public const string RegKeyPath = "Software\\WhatsAppReport";
+
+            public const string RegKeyPath = "Software\\WhatsAppReport";
+
 
         // Variablen
-        public static string appPath = Application.StartupPath;
 
-        public static string Auswertungsdatei;
-        public static string Arbeitsverzeichnis;
-        public static string Anlagenverzeichnis;
-        public static string Kommunikationsprotokoll;
-        public static string Auswertungsbericht;
-        public static string Logfile;
-        public static string OperationID;
-        public static string[] TemporaereVerzeichnisse = new string[0];
-        public static string[] DateiAnhaenge = new string[0];
-        public static string[] Absender = new string[0];
-        public static string osType;
-        public static uint AnzahlNachrichten = 0;
-        public static uint AnzahlLinks = 0;
-        public static uint AnzahlBilder = 0;
-        public static uint AnzahlGeloeschteDateien = 0;
-        public static string ProgramVersion;
+        // Verzeichnisse
+            public static string ApplicationPath = Application.StartupPath;
+            public static string TemplatePath = Path.Combine(ApplicationPath, "Templates");
+            public static string LogfilePath = Path.Combine(ApplicationPath, "Logfiles");
 
-        // Einstellungen
+            // Allgemein
+            public static string Auswertungsdatei;
+            public static string Arbeitsverzeichnis;
+            public static string Anlagenverzeichnis;
+            public static string Kommunikationsprotokoll;
+            public static string Annex;
+            public static string Logfile;
+            public static string OperationID;
+            public static string[] TemporaereVerzeichnisse = new string[0];
+            public static string[] DateiAnhaenge = new string[0];
+            public static string[] Absender = new string[0];
+            public static string osType;
+            public static uint AnzahlNachrichten = 0;
+            public static uint AnzahlLinks = 0;
+            public static uint AnzahlBilder = 0;
+            public static uint AnzahlGeloeschteDateien = 0;
+            public static string ProgramVersion;
 
-        public static uint ReportSchriftgroesseTitel;
-        public static uint ReportSchriftgroesseUeberschrift;
-        public static uint ReportSchriftgroesseText;
-        public static uint ChatprotokollMaxBildbreite;
-        public static uint ChatprotokollMaxBildhoehe;
-        public static uint ChatprotokollMaxEmoticonbreite;
-        public static uint ChatprotokollMaxEmoticonhoehe;
-        public static bool ShowDebugMenu;
+            // Einstellungen
 
+                // Userdata
+                public static string AuswertungBehoerde;
+                public static string AuswertungDienststelle;
+                public static string AuswertungSachbearbeiter;
 
+                // Layout
+                public static uint ReportSchriftgroesseTitel;
+                public static uint ReportSchriftgroesseUeberschrift;
+                public static uint ReportSchriftgroesseText;
+                public static uint ChatprotokollMaxBildbreite;
+                public static uint ChatprotokollMaxBildhoehe;
+                public static uint ChatprotokollMaxEmoticonbreite;
+                public static uint ChatprotokollMaxEmoticonhoehe;
 
-        // Bereich Programm
+                // Debug
+                public static bool ShowDebugMenu;
+
 
         public static void WriteRegistryValue(string keyName, object keyValue, RegistryValueKind valueKind)
         {
@@ -103,62 +121,67 @@ namespace WhatsAppReport
 
         public static void LadeGlobaleVariablen()
         {
-            
+
             // Lade aus Registry
 
-            string ReportSchriftgroesseTitel = ReadRegistryValue("ReportSchriftgroesseTitel");
-            if (UInt32.TryParse(ReportSchriftgroesseTitel, out uint ausgabe0))
-            {
-                Global.ReportSchriftgroesseTitel = ausgabe0;
-            }
+                // String-Werte
+                    Global.AuswertungBehoerde = ReadRegistryValue("AuswertungBehoerde");
+                    Global.AuswertungDienststelle = ReadRegistryValue("AuswertungDienststelle");
+                    Global.AuswertungSachbearbeiter = ReadRegistryValue("AuswertungSachbearbeiter");
 
-            string ReportSchriftgroesseUeberschrift = ReadRegistryValue("ReportSchriftgroesseUeberschrift");
-            if (UInt32.TryParse(ReportSchriftgroesseUeberschrift, out uint ausgabe1))
-            {
-                Global.ReportSchriftgroesseUeberschrift = ausgabe1;
-            }
+                // UInt-Werte
+                    string ReportSchriftgroesseTitel = ReadRegistryValue("ReportSchriftgroesseTitel");
+                    if (UInt32.TryParse(ReportSchriftgroesseTitel, out uint ausgabe0))
+                    {
+                        Global.ReportSchriftgroesseTitel = ausgabe0;
+                    }
 
-            string ReportSchriftgroesseText = ReadRegistryValue("ReportSchriftgroesseText");
-            if (UInt32.TryParse(ReportSchriftgroesseText, out uint ausgabe2))
-            {
-                Global.ReportSchriftgroesseText = ausgabe2;
-            }
+                    string ReportSchriftgroesseUeberschrift = ReadRegistryValue("ReportSchriftgroesseUeberschrift");
+                    if (UInt32.TryParse(ReportSchriftgroesseUeberschrift, out uint ausgabe1))
+                    {
+                        Global.ReportSchriftgroesseUeberschrift = ausgabe1;
+                    }
 
-            string ChatprotokollMaxBildbreite = ReadRegistryValue("ChatprotokollMaxBildbreite");
-            if (UInt32.TryParse(ChatprotokollMaxBildbreite, out uint ausgabe3))
-            {
-                Global.ChatprotokollMaxBildbreite = ausgabe3;
-            }
+                    string ReportSchriftgroesseText = ReadRegistryValue("ReportSchriftgroesseText");
+                    if (UInt32.TryParse(ReportSchriftgroesseText, out uint ausgabe2))
+                    {
+                        Global.ReportSchriftgroesseText = ausgabe2;
+                    }
 
-            string ChatprotokollMaxBildhoehe = ReadRegistryValue("ChatprotokollMaxBildhoehe");
-            if (UInt32.TryParse(ChatprotokollMaxBildhoehe, out uint ausgabe4))
-            {
-                Global.ChatprotokollMaxBildhoehe = ausgabe4;
-            }
-            string ChatprotokollMaxEmoticonbreite = ReadRegistryValue("ChatprotokollMaxEmoticonbreite");
-            if (UInt32.TryParse(ChatprotokollMaxEmoticonbreite, out uint ausgabe5))
-            {
-                Global.ChatprotokollMaxEmoticonbreite = ausgabe5;
-            }
+                    string ChatprotokollMaxBildbreite = ReadRegistryValue("ChatprotokollMaxBildbreite");
+                    if (UInt32.TryParse(ChatprotokollMaxBildbreite, out uint ausgabe3))
+                    {
+                        Global.ChatprotokollMaxBildbreite = ausgabe3;
+                    }
 
-            string ChatprotokollMaxEmoticonhoehe = ReadRegistryValue("ChatprotokollMaxEmoticonhoehe");
-            if (UInt32.TryParse(ChatprotokollMaxEmoticonhoehe, out uint ausgabe6))
-            {
-                Global.ChatprotokollMaxEmoticonhoehe = ausgabe6;
-            }
+                    string ChatprotokollMaxBildhoehe = ReadRegistryValue("ChatprotokollMaxBildhoehe");
+                    if (UInt32.TryParse(ChatprotokollMaxBildhoehe, out uint ausgabe4))
+                    {
+                        Global.ChatprotokollMaxBildhoehe = ausgabe4;
+                    }
+                    string ChatprotokollMaxEmoticonbreite = ReadRegistryValue("ChatprotokollMaxEmoticonbreite");
+                    if (UInt32.TryParse(ChatprotokollMaxEmoticonbreite, out uint ausgabe5))
+                    {
+                        Global.ChatprotokollMaxEmoticonbreite = ausgabe5;
+                    }
 
-            string ShowDebugMenu = ReadRegistryValue("ShowDebugMenu");
-            if (Boolean.TryParse(ShowDebugMenu, out bool ausgabe7))
-            {
-                Global.ShowDebugMenu = ausgabe7;
-            }
+                    string ChatprotokollMaxEmoticonhoehe = ReadRegistryValue("ChatprotokollMaxEmoticonhoehe");
+                    if (UInt32.TryParse(ChatprotokollMaxEmoticonhoehe, out uint ausgabe6))
+                    {
+                        Global.ChatprotokollMaxEmoticonhoehe = ausgabe6;
+                    }
+
+                    string ShowDebugMenu = ReadRegistryValue("ShowDebugMenu");
+                    if (Boolean.TryParse(ShowDebugMenu, out bool ausgabe7))
+                    {
+                        Global.ShowDebugMenu = ausgabe7;
+                    }
 
 
-            // Lade sonstige Variablen
+            // Sonstige Werte
 
             ProgramVersion = Application.ProductVersion;
         }
-
 
 
 
@@ -195,7 +218,6 @@ namespace WhatsAppReport
 
             // Dateien anlegen
             CreateKommunikationsprotokollFile();
-            CreateAuswertungsberichtFile();
         }
 
         public static string SetOperationID()
@@ -236,30 +258,17 @@ namespace WhatsAppReport
             WriteLog("Kommunikationsprotokoll angelegt: " + Kommunikationsprotokoll);
         }
 
-        public static void CreateAuswertungsberichtFile()
-        {
-            // Pfad zur Textdatei erstellen
-            Global.Auswertungsbericht = Path.Combine(Global.Arbeitsverzeichnis, "auswertungsbericht.html");
-
-            // Textdatei erstellen oder überschreiben
-            string htmlKopf = $"<!DOCTYPE html><html><head><title>Auswertungsbericht</title><style> .titel {{font-size: {Global.ReportSchriftgroesseTitel}px; font-weight: bold; margin-bottom: 10px; }} .ueberschrift {{font-size: {Global.ReportSchriftgroesseUeberschrift}px; font-weight: bold; margin-bottom: 10px; }} body {{font-family: Calibri, Arial, sans-serif; font-size: {Global.ReportSchriftgroesseText}px; }} </style></head><body><div class=\"titel\">Auswertungsbericht</div>"; File.AppendAllText(Global.Auswertungsbericht, htmlKopf);
-            
-            // Logfileeintrag
-            WriteLog("Auswertungsbericht angelegt: " + Auswertungsbericht);
-        }
-
         public static void CreateLogfile()
         {
-            string programDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
             // Pfad zur Textdatei erstellen
-            Logfile = Path.Combine(programDirectory, "Log", "Log-" + OperationID + ".txt");
+            string logfilename = OperationID + ".txt";
+            Logfile = Path.Combine(LogfilePath, logfilename);
 
             // Textdatei erstellen oder überschreiben
             string line = "Logfile für Auswertung: " + OperationID + Environment.NewLine;
             try
             {
-                File.AppendAllText(Global.Logfile, line);
+                File.AppendAllText(Logfile, line);
             }
             catch (Exception)
             {
@@ -287,6 +296,8 @@ namespace WhatsAppReport
 
 
 
+
+
         // Bereich Allgemein
 
         public static void ArbeitsverzeichnisFuerLoeschungZwischenspeichern()
@@ -300,6 +311,36 @@ namespace WhatsAppReport
             File.AppendAllText(Logfile, Eintrag + Environment.NewLine);
         }
 
+        public static void FillFieldInAnnex(string fieldName, string value)
+        {
+            // Erstelle eine Instanz von Microsoft Word
+            Microsoft.Office.Interop.Word.Application wordApp = new Microsoft.Office.Interop.Word.Application();
+
+            // Öffne das DOTX-Dokument
+            Document doc = wordApp.Documents.Open(Annex);
+
+            // Aktiviere das Dokument
+            doc.Activate();
+
+            // Durchsuche alle Felder im Dokument
+            foreach (Field field in doc.Fields)
+            {
+                // Überprüfe, ob das Feld den gesuchten Feldnamen enthält
+                if (field.Code.Text.Contains(fieldName))
+                {
+                    // Ersetze das Feld durch den Wert
+                    field.Select();
+                    wordApp.Selection.TypeText(value);
+                }
+            }
+
+            // Speichere und schließe das Dokument
+            doc.Save();
+            doc.Close();
+
+            // Beende die Word-Anwendung
+            wordApp.Quit();
+        }
 
 
 
@@ -426,22 +467,6 @@ namespace WhatsAppReport
 
             // Zeile in Textdatei anhängen
             File.AppendAllText(Global.Kommunikationsprotokoll, line + Environment.NewLine);
-        }
-
-        public static void WriteToAuswertungsbericht(string header, string text)
-        {
-            if (header != null && header != string.Empty)
-            {
-                header = "<div class=\"ueberschrift\">" + header + "</div>";
-            }
-                ;
-            if (text != null && text != string.Empty)
-            {
-                text = "<p>" + text + "</p>";
-            }
-
-            // Zeile in Textdatei anhängen
-            File.AppendAllText(Global.Auswertungsbericht, header + text + Environment.NewLine);
         }
 
         public static string DateiEinbindung(string Dateiname)
@@ -643,19 +668,41 @@ namespace WhatsAppReport
 
         // Bereich Nachbereitung
 
+        public static void CreateAnnex()
+        {
+            // Kopiere die Vorlagendatei in das Arbeitsverzeichnis 
+            string sourceFile = Path.Combine(TemplatePath, "Anlage.docx");
+            WriteLog("Versuche, die Anlagenvorlage " + sourceFile + " ins Arbeitsverzeichnis zu kopieren");
+
+            Annex = Path.Combine(Arbeitsverzeichnis, "Anlage.docx");
+            WriteLog("Target:" + Annex);
+
+            File.Copy(sourceFile, Annex);
+            WriteLog("Die Anlage wurde ins Arbeitsverzeichnis kopiert.");
+
+            Absender = Absender.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            Absender = Absender.Distinct().ToArray();
+
+            WriteLog("Erstelle Inhalte der Anlage...");
+
+            
+            // Befülle die Felder
+            FillFieldInAnnex("Behoerde",AuswertungBehoerde);
+            FillFieldInAnnex("Dienststelle", AuswertungDienststelle);
+            FillFieldInAnnex("Sachbearbeiter", AuswertungSachbearbeiter);
+            FillFieldInAnnex("AnzahlAbsender", Absender.Length.ToString());
+            FillFieldInAnnex("AnzahlDateien", DateiAnhaenge.Length.ToString());
+            FillFieldInAnnex("AnzahlNachrichten", AnzahlNachrichten.ToString());
+        }
+
         public static void AuswertungAbschliessen()
         {
-            // Abschluss der HTML-Files festlegen
+            // Kommunikationsprotokoll abschließen
             string htmlFuss = "</body></html>";
-
-            // Statische Auswertung
-            VerarbeiteSonderauswertung();
-
-            // Reporte abschließen
             File.AppendAllText(Global.Kommunikationsprotokoll, htmlFuss);
-            File.AppendAllText(Global.Auswertungsbericht, htmlFuss);
 
-
+            // Anlage zur Auswertung anlegen
+            CreateAnnex();
 
             // Alle Dateien außer Berichten im Arbeitsverzeichnis löschen
             CleanupArbeitsverzeichnis();
@@ -684,47 +731,18 @@ namespace WhatsAppReport
 
         }
 
-        public static void VerarbeiteSonderauswertung()
-        {
-            Absender = Absender.Where(x => !string.IsNullOrEmpty(x)).ToArray();
-            Absender = Absender.Distinct().ToArray();
-
-            // Grunddaten
-            WriteToAuswertungsbericht("Hinweise", "Die Auswertung erfolgte am " + DateTime.Now.ToString("dd.MM.yyyy") + ". Ausgewertet wurden vom Verfahrensbeteiligten bereitsgestellte Dateien, es erfolgte keine it-forensische Untersuchung. Werden Namen angezeigt, spiegelt dies lediglich wieder, wie die Telefonnummer beim Verfahrensbeteiligten gespeichert wurde.");
-
-            // Statistik
-            WriteToAuswertungsbericht("Statistische Angaben", "Nachrichten: " + Global.AnzahlNachrichten);
-            WriteToAuswertungsbericht(String.Empty, "Chat-Teilnehmer: " + Absender.Length.ToString());
-            WriteToAuswertungsbericht(String.Empty, "Gesicherte Dateien: " + DateiAnhaenge.Length.ToString());
-            WriteToAuswertungsbericht(String.Empty, "davon Bilddateien: " + AnzahlBilder.ToString());
-            WriteToAuswertungsbericht(String.Empty, "Gelöschte Bilddateien: " + AnzahlBilder.ToString());
-            WriteToAuswertungsbericht(String.Empty, "Weblinks: " + AnzahlLinks.ToString());
-
-            // Chatteilnehmer
-            WriteToAuswertungsbericht("Chat-Teilnehmer:", String.Empty);
-            foreach (string Absender in Absender)
-            {
-                WriteToAuswertungsbericht(String.Empty, "<li>" + Absender);
-            }
-
-            // Dateien
-            WriteToAuswertungsbericht("Gesicherte Dateien:", String.Empty);
-            foreach (string Datei in DateiAnhaenge)
-            {
-                WriteToAuswertungsbericht(String.Empty, "<li>" + Datei);
-            }
-        }
-
         public static void CleanupArbeitsverzeichnis()
         {
             string[] excludedFiles = {
                 Path.GetFileName(Kommunikationsprotokoll),
-                Path.GetFileName(Auswertungsbericht),
+                Path.GetFileName(Annex)
             };
 
             DirectoryInfo Quellverzeichnis = new DirectoryInfo(Arbeitsverzeichnis);
 
             FileInfo[] Dateien = Quellverzeichnis.GetFiles();
+
+            WriteLog("Räume Arbeitsverzeichnis auf...");
 
             // Loop through all files in the source directory
             foreach (FileInfo Datei in Dateien)
@@ -735,10 +753,11 @@ namespace WhatsAppReport
                     try
                     {
                         Datei.Delete();
+                        WriteLog("Gelöscht: " + Datei);
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message);
+                        WriteLog("Die Datei " + Datei + " konnte nicht gelöscht werden! Fehler: " + ex.Message);
                     }
                 }
             }
