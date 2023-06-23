@@ -1,5 +1,5 @@
 #define MyAppName "WhatsAppReport"
-#define MyAppVersion "1.1.0"
+#define MyAppVersion "1.1.1"
 #define MyAppPublisher "Christian Jäger"
 #define MyAppExeName "WhatsAppReport.exe"
 #define MyAppCopyrigth "© 2023 Christian Jäger under GPL License"
@@ -204,9 +204,9 @@ Root: HKCU; Subkey: "SOFTWARE\WhatsAppReport"; ValueType: string; ValueName: "Ch
 Root: HKCU; Subkey: "SOFTWARE\WhatsAppReport"; ValueType: string; ValueName: "ChatprotokollMaxEmoticonbreite"; ValueData: "100"; Flags: uninsdeletevalue
 Root: HKCU; Subkey: "SOFTWARE\WhatsAppReport"; ValueType: string; ValueName: "ChatprotokollMaxEmoticonhoehe"; ValueData: "100"; Flags: uninsdeletevalue
 Root: HKCU; Subkey: "SOFTWARE\WhatsAppReport"; ValueType: string; ValueName: "ShowDebugMenu"; ValueData: "false"; Flags: uninsdeletevalue
-Root: HKCU; Subkey: "SOFTWARE\WhatsAppReport"; ValueType: string; ValueName: "Behoerde"; ValueData: '{code:GetBehoerde}'; Flags: uninsdeletevalue
-Root: HKCU; Subkey: "SOFTWARE\WhatsAppReport"; ValueType: string; ValueName: "Dienststelle"; ValueData: '{code:GetDienststelle}'; Flags: uninsdeletevalue
-Root: HKCU; Subkey: "SOFTWARE\WhatsAppReport"; ValueType: string; ValueName: "Sachbearbeiter"; ValueData: '{code:GetSachbearbeiter}'; Flags: uninsdeletevalue
+Root: HKCU; Subkey: "SOFTWARE\WhatsAppReport"; ValueType: string; ValueName: "AuswertungBehoerde"; ValueData: {code:GetBehoerde}; Flags: uninsdeletevalue
+Root: HKCU; Subkey: "SOFTWARE\WhatsAppReport"; ValueType: string; ValueName: "AuswertungDienststelle"; ValueData: {code:GetDienststelle}; Flags: uninsdeletevalue
+Root: HKCU; Subkey: "SOFTWARE\WhatsAppReport"; ValueType: string; ValueName: "AuswertungSachbearbeiter"; ValueData: {code:GetSachbearbeiter}; Flags: uninsdeletevalue
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
